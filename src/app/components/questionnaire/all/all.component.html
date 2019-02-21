@@ -1,0 +1,24 @@
+<div class="q-header">
+  <h2>问卷列表</h2>
+  <button nz-button [nzType]="buttonType" (click)="delChange()">{{buttonText}}</button>
+  <button nz-button nzType="primary" nzShape="circle" (click)="addQuestion()"><i nz-icon type="plus"></i></button>
+</div>
+<app-view>
+  <ul class="q-list" *ngIf="QuestionnaireList.length > 0">
+    <li *ngFor="let item of QuestionnaireList; let key = index">
+      <b>
+        <a (click)="goPreview(key)">{{item.name}}</a>
+
+      </b>
+      <span style="color: red;" (click)="goAnswer(key)"><a [href]="answerHttp" target="_blank">答卷</a></span>
+      <p class="date">最近日期：<span>{{item.date}}</span></p>
+      <p style="padding:12px 20px 12px 0;" *ngIf="delState">
+        <label nz-checkbox [(ngModel)]="item.check"></label>
+      </p>
+    </li>
+  </ul>
+</app-view>
+<app-view *ngIf="QuestionnaireList.length < 0">
+  还没有问卷哦，请点击右上角加号按钮前往添加
+</app-view>
+

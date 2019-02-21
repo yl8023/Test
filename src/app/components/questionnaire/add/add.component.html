@@ -1,0 +1,96 @@
+<div class="q-header">
+  <h2>{{qId || qId == 0 ? '编辑': '新建'}}问卷</h2>
+  <button nz-button nzType="primary" (click)="addQuestion('')">添加问题</button>
+</div>
+
+<app-view>
+  <div class="q-from">
+
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24">问卷标题</nz-form-label>
+        <nz-form-control [nzHasFeedback]="Qname" [nzValidateStatus]="Qname" [nzSm]="14" [nzXs]="24">
+          <input type="text" nz-input placeholder="输入问卷标题.." [formControl]="Qname">
+          <nz-form-explain *ngIf="Qname.dirty && Qname.errors || Qname.pending ">
+            <ng-container *ngIf="Qname.hasError('required')">
+              请输入问卷标题!
+            </ng-container>
+            <ng-container *ngIf="Qname.hasError('duplicated')">
+              已经有问卷叫这个名字了!
+            </ng-container>
+            <ng-container *ngIf="Qname.pending">
+              正在查询...
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+
+
+    <form nz-form [formGroup]="qForm.form" *ngFor="let qForm of formList; let key = index">
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="text">第{{key+1}}问</nz-form-label>
+        <nz-form-control [nzSm]="12" [nzXs]="24" nzValidateStatus>
+          <input type="text" nz-input [formControlName]="qForm.name" placeholder="输入问题..">
+          <nz-form-explain *ngIf="qForm.form.get(qForm.name).dirty && qForm.form.get(qForm.name).errors">请输入问题..!</nz-form-explain>
+        </nz-form-control>
+        <nz-form-control [nzSm]="6" [nzXs]="24">
+          <nz-dropdown nzTrigger="click">
+            <a nz-dropdown>
+              <button nz-button><i nz-icon type="down"></i></button>
+            </a>
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item (click)="formReset(qForm.form)">
+                <a>清空</a>
+              </li>
+              <li nz-menu-item (click)="formDelete(qForm)">
+                <a>删除</a>
+              </li>
+            </ul>
+          </nz-dropdown>
+        </nz-form-control>
+      </nz-form-item>
+
+      <div *ngIf="qForm.form.get('type').value < 2">
+        <nz-form-item *ngFor="let option of qForm.options">
+          <nz-form-label [nzSm]="6" [nzXs]="24" [nzFor]="option.name">{{option.name}}</nz-form-label>
+          <nz-form-control [nzSm]="12" [nzXs]="24" nzValidateStatus>
+            <input type="text" nz-input [formControlName]="option.name" placeholder="输入选项..">
+            <nz-form-explain *ngIf="qForm.form.get(option.name).dirty && qForm.form.get(option.name).errors">请输入该选项..!</nz-form-explain>
+          </nz-form-control>
+          <nz-form-control [nzSm]="6" [nzXs]="24">
+            <button nz-button nzType="dashed" (click)="delOption(qForm, option)"><i nz-icon type="minus"></i></button>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="qForm.options.length < 6">
+          <button nz-button nzType="primary" style="margin-left:25%;" (click)="addOption(qForm, '')"><i nz-icon type="plus"></i>添加选项</button>
+          <nz-select style="width: 120px;margin-left: 30px;" formControlName="type">
+            <nz-option nzValue="0" nzLabel="单选"></nz-option>
+            <nz-option nzValue="1" nzLabel="多选"></nz-option>
+            <nz-option nzValue="2" nzLabel="填空"></nz-option>
+          </nz-select>
+        </nz-form-item>
+      </div>
+      <div  *ngIf="qForm.form.get('type').value == 2">
+        <nz-form-item>
+          <nz-select style="width: 120px;margin-left: 25%;" formControlName="type">
+            <nz-option nzValue="0" nzLabel="单选"></nz-option>
+            <nz-option nzValue="1" nzLabel="多选"></nz-option>
+            <nz-option nzValue="2" nzLabel="填空"></nz-option>
+          </nz-select>
+        </nz-form-item>
+      </div>
+
+
+    </form>
+
+
+  </div>
+  <nz-button-group style="width: 160px; position: absolute;right: 20px; bottom: 20px;">
+    <button nz-button nzType="primary" (click)="submitForm()" [disabled]="!Qname.valid">保存</button>
+    <button nz-button nzType="danger" (click)="goBack()">取消</button>
+  </nz-button-group>
+
+</app-view>

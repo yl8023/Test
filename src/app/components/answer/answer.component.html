@@ -1,0 +1,30 @@
+<div class="q-header">
+  <h2 style="text-align: center;">{{Questionnaire.name}}</h2>
+</div>
+<app-view *ngIf="!confirm">
+  <nz-card [nzTitle]="Questionnaire.date">
+    <div *ngFor="let item of Questionnaire.questions; let key = index">
+      <p class="question">
+        <b style="font-size: 16px;">{{key+1}}、{{item.text}}</b>
+      </p>
+      <div class="options" *ngIf="item.type == 0">
+        <nz-radio-group [(ngModel)]="answerList[key]">
+          <p nz-radio class="option" *ngFor="let opt of item.options" [nzValue]="opt.name">{{opt.name}}、{{opt.text}}</p>
+        </nz-radio-group>
+      </div>
+      <div class="options" *ngIf="item.type == 1">
+        <p nz-checkbox class="option" *ngFor="let opt of item.options; let opKey = index" [(ngModel)]="answerList[key][opKey]">{{opt.name}}、{{opt.text}}</p>
+      </div>
+      <div class="options" *ngIf="item.type == 2">
+        <textarea rows="4" nz-input [(ngModel)]="answerList[key]"></textarea>
+      </div>
+    </div>
+  </nz-card>
+  <nz-button-group style="width: 160px; position: absolute;right: 20px; bottom: 20px;">
+    <button nz-button nzType="primary" (click)="submitForm()">提交</button>
+  </nz-button-group>
+</app-view>
+<app-view *ngIf="confirm">
+  感谢您的支持..(*^▽^*)
+</app-view>
+

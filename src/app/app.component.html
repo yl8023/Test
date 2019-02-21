@@ -1,0 +1,26 @@
+<!-- NG-ZORRO -->
+<!--<a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">-->
+  <!--<img height="300" src="https://img.alicdn.com/tfs/TB1NvvIwTtYBeNjy1XdXXXXyVXa-89-131.svg">-->
+<!--</a>-->
+<nz-layout class="layout">
+  <nz-header>
+    <ul *ngIf="config.headerStu" nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
+      <li nz-menu-item [routerLink]="['/home']" routerLinkActive="ant-menu-item-selected" >首页</li>
+      <li nz-menu-item [routerLink]="['/dotadata']" routerLinkActive="ant-menu-item-selected" >战绩</li>
+      <li nz-menu-item [routerLink]="['/questionnaire']" routerLinkActive="ant-menu-item-selected" >问卷统计</li>
+    </ul>
+  </nz-header>
+  <nz-layout>
+    <nz-sider [nzWidth]="200" [nzCollapsed]="config.silder">
+      <ul nz-menu [nzMode]="'inline'" [nzTheme]="'dark'" [nzInlineCollapsed]="config.menu">
+        <li nz-menu-item *ngFor="let li of config.list" [routerLink]="li.router" routerLinkActive="ant-menu-item-selected">
+            <span title><i nz-icon [type]="li.icon"></i>{{menuCollapsed ? '':li.text}}</span>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout>
+      <router-outlet></router-outlet>
+    </nz-layout>
+  </nz-layout>
+</nz-layout>
+

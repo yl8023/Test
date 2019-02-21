@@ -1,0 +1,28 @@
+<div class="q-header">
+  <h2 >问卷结果统计</h2>
+  <nz-select style="width: 200px;" [(ngModel)]="select" (ngModelChange)="selectFn()">
+    <nz-option *ngFor="let item of QuestionnaireList; let key = index" [nzValue]="key" [nzLabel]="item.name"></nz-option>
+  </nz-select>
+</div>
+<app-view *ngIf="QuestionnaireList.length>0">
+  <div class="echart-box" *ngIf="Questionnaire.answer.length>0">
+    <div *ngFor="let echart of echartsData">
+      <div *ngIf="!echart.type" class="echart" echarts [options]="echart"></div>
+      <nz-list  *ngIf="echart.type == 2" [nzDataSource]="echart.ans" nzBordered
+               [nzHeader]="echart.name"
+               [nzRenderItem]="item">
+        <ng-template #item let-item><nz-list-item [nzContent]="item"></nz-list-item></ng-template>
+      </nz-list>
+    </div>
+  </div>
+  <div class="lt-tip" *ngIf="Questionnaire.answer.length==0">
+    此问卷还没有人回答过..
+  </div>
+</app-view>
+
+<app-view *ngIf="QuestionnaireList.length==0">
+  <div class="lt-tip">
+    还没有创建问卷哦，清先添加一份问卷QAQ.
+  </div>
+</app-view>
+

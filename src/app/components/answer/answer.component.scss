@@ -1,0 +1,11 @@
+.question{
+  padding: 8px 0;
+}
+.options{
+  padding-left: 30px;
+  display: flex;
+  .option{
+    flex: 1px;
+    padding: 0 10px;
+  }
+}
